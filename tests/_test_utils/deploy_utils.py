@@ -154,7 +154,7 @@ class ModelDeployer:
             trust_remote_code=True,
         )
         sampling_params = SamplingParams(temperature=0.8, top_p=0.9)
-        outputs = llm.generate(COMMON_PROMPTS, sampling_params)
+        outputs = llm.generate(COMMON_PROMPTS, sampling_params, use_tqdm=False)
 
         # Assertions and output
         assert len(outputs) == len(COMMON_PROMPTS), (
