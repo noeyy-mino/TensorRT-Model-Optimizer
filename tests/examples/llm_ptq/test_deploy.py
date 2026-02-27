@@ -576,7 +576,7 @@ def test_medusa(command):
 )
 def test_eagle(command):
     """Skip test if MODELOPT_LOCAL_EAGLE_MODEL is set but model doesn't exist locally.
-    speculative models shoule be loaded by local path"""
+    speculative models should be loaded by local path"""
     local_root = os.getenv("MODELOPT_LOCAL_EAGLE_MODEL")
     if not local_root:
         pytest.skip("MODELOPT_LOCAL_EAGLE_MODEL is not set")
