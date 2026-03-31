@@ -254,21 +254,19 @@ class ModelDeployer:
         from tensorrt_llm.llmapi import CudaGraphConfig, EagleDecodingConfig, KvCacheConfig
 
         sampling_params = SamplingParams(max_tokens=32)
-        effective_model = self.base_model if "eagle" in self.model_id.lower() else self.model_id
         qwen3_models = (
             "nvidia/Qwen3-Next-80B-A3B-Instruct-NVFP4",
             "nvidia/Qwen3-Next-80B-A3B-Thinking-NVFP4",
+            "nvidia/EAGLE3-NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
         )
         nemotron_models = (
             "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8",
             "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4",
-            "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
         )
-        disable_block_reuse_models = qwen3_models + nemotron_models
         kv_cache_config = KvCacheConfig(
-            enable_block_reuse=effective_model not in disable_block_reuse_models,
+            enable_block_reuse=self.model_id not in qwen3_models,
             free_gpu_memory_fraction=0.8,
-            mamba_ssm_cache_dtype="float32" if effective_model not in nemotron_models else "auto",
+            mamba_ssm_cache_dtype="float32" if self.model_id not in nemotron_models else "auto",
         )
         base_kw = {
             "tensor_parallel_size": self.tensor_parallel_size,
